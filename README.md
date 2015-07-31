@@ -13,7 +13,7 @@ Functions named "Hello", "World", "HelloWorld" or anything similar.
 Object keys named "Hello", "World", "HelloWorld" or anything similar.
 Without using the above, output the string "Hello World!" to prove that there is always a way.
 
-My solution
+**My solution:**
 
 ```javascript
 var p = (function () {
@@ -73,6 +73,8 @@ To support testing this simulation our memory manager needs to enforce read/writ
 read
 
 This method is the counterpart to write. Only indices within allocated blocks may be read. The read method accepts an index integer. If the index is within an allocated block, the method should return the value from the backing array at that index; otherwise, this method should throw an exception.
+
+**My solution:**
 
 ```javascript
 function fix(arr, memory){
@@ -162,4 +164,28 @@ MemoryManager.prototype.write = function(pointer, value){
     fix(this.arr, this.memory);
   }
 }
+```
+
+###EX 3
+
+Description:
+
+A bomb has been set to go off! You have to find the wire and cut it in order to stop the timer. There is a global var that holds the numeric ID to which wire to cut. Find that and then you can Bomb.CutTheWire(wireKey);
+
+**My solution:**
+
+```javascript
+(function(a){
+  var keys = Object.keys(a);
+  for(var k of keys){
+   if(typeof a[k] === 'object'){
+   }
+   else{
+    if(!isNaN(a[k])){
+     Bomb.CutTheWire(a[k]);
+     return;
+    }
+   }
+  }
+})(this);
 ```
