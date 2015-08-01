@@ -189,3 +189,67 @@ A bomb has been set to go off! You have to find the wire and cut it in order to 
   }
 })(this);
 ```
+
+###EX 4
+
+Description:
+
+Complete the method (or function in Python) to return true when its argument is an array that has the same nesting structure as the first array.
+
+For example:
+
+```javascript
+ // should return true
+[ 1, 1, 1 ].sameStructureAs( [ 2, 2, 2 ] );
+[ 1, [ 1, 1 ] ].sameStructureAs( [ 2, [ 2, 2 ] ] );
+
+ // should return false
+[ 1, [ 1, 1 ] ].sameStructureAs( [ [ 2, 2 ], 2 ] );  
+[ 1, [ 1, 1 ] ].sameStructureAs( [ [ 2 ], 2 ] );  
+
+// should return true
+[ [ [ ], [ ] ] ].sameStructureAs( [ [ [ ], [ ] ] ] );
+
+// should return false
+[ [ [ ], [ ] ] ].sameStructureAs( [ [ 1, 1 ] ] );
+```
+
+For your convenience, there is already a function `isArray(o)` declared in the JS version that returns true if its argument is an array, false otherwise.
+
+**My solution:**
+```javascript
+Array.prototype.sameStructureAs = function (other) {
+    Array.prototype.status = Array.prototype.status || true;
+    if(this.length != other.length){
+      Array.prototype.status = false;
+      return false;
+    }
+
+
+    for(var index = 0; index < this.length; index++)
+    {
+
+      var val = this[index];
+       if(isArray(val) && isArray(other[index])){
+          if(val.length != other[index].length){
+            [].sameStructureAs([1,2,3])
+            Array.prototype.status = false;
+            break;
+          }
+          else{
+            Array.prototype.status = true;
+            val.sameStructureAs(other[index]);
+          }
+       }
+       else if (!isArray(val) && !isArray(other[index])){
+         Array.prototype.status = true;
+       }
+       else{
+         Array.prototype.status = false;
+         [].sameStructureAs([1,2,3])
+         break;
+       }
+    }
+    return Array.prototype.status;
+};
+```
