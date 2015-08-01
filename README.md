@@ -253,3 +253,78 @@ Array.prototype.sameStructureAs = function (other) {
     return Array.prototype.status;
 };
 ```
+
+###EX 5
+
+Description:
+
+Given an array of positive or negative integers
+
+`I= [i1,..,in]`
+
+you have to produce a sorted array P of the form
+
+[ [p, sum of all ij of I for which p is a prime factor (p positive) of ij] ...]
+
+P will be sorted by increasing order of the prime numbers. The final result has to be given as a string in Java or C# and as an array of arrays in other languages.
+
+Example:
+
+```javascript
+I = [12, 15]
+result = [[2, 12], [3, 27], [5, 15]]
+```
+[2, 3, 5] is the list of all prime factors of the elements of I, hence the result.
+
+Note: It can happen that a sum is 0 if some numbers are negative!
+
+Example: I = [15, 30, -45] 5 divides 15, 30 and (-45) so 5 appears in the result, the sum of the numbers for which 5 is a factor is 0 so we have [5, 0] in the result amongst others.
+
+```javascript
+
+function isPrime(a){
+
+  this.results = this.results || {};
+  if(typeof this.results[a] != 'undefined'){
+    return this.results[a];
+  }
+
+   if(a === 2){
+    this.results[a] = true;
+    return true;
+   }
+
+  for(var i=3; i <a; i = i+2){
+   if(a%i == 0){
+    this.results[a] = false;
+    return false;
+   }
+  }
+  this.results[a] = true;
+  return true;
+}
+
+
+
+function sumOfDivided(I){
+  var time = process.hrtime()
+  var k = I.map(function(r){ return Math.abs(r)});
+  var max = Math.max.apply(this, k);
+  var arr = [];
+
+  var dev = I.filter(function(l){ return l%2 == 0});
+  if(dev.length){
+   arr.push([2, dev.reduce(function(sum, n){ return sum + n;}, 0)]);
+  }
+
+  for(var i=3; i<max; i = i+2){
+    if(isPrime(i)){
+      var dev = I.filter(function(l){ return l%i == 0});
+      if(dev.length){
+       arr.push([i, dev.reduce(function(sum, n){ return sum + n;}, 0)]);
+      }
+    }
+  }
+  return arr;
+}
+```
