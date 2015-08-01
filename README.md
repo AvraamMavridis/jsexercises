@@ -217,6 +217,7 @@ For example:
 For your convenience, there is already a function `isArray(o)` declared in the JS version that returns true if its argument is an array, false otherwise.
 
 **My solution:**
+
 ```javascript
 Array.prototype.sameStructureAs = function (other) {
     Array.prototype.status = Array.prototype.status || true;
@@ -327,4 +328,110 @@ function sumOfDivided(I){
   }
   return arr;
 }
+```
+
+###EX 6
+
+Description:
+
+Create any card game!
+
+Create a Card Game library of classes which could be used to create any number of basic card games. You'll need at least a Deck class and a Card class.
+
+Deck functionality
+
+A deck has a public attribute:
+
+cards: array of remaining cards in the deck.
+
+...and three public methods:
+
+count(): count of remaining cards in the deck.
+
+shuffle(): randomize the order of the remaining cards in the deck.
+
+draw(n): remove the last n cards from the deck and return them in an array.
+
+Upon initialization, a deck is filled with 52 cards (13 from each of 4 suits).
+
+Card functionality
+
+A card has these public attributes:
+
+suit: a symbol representing the suit of the card.
+rank: an integer from 1 to 13. ("ace" is 1, "king" is 13)
+Javascript: face_card: is this card a face card? (> 10)
+...and these methods:
+
+Ruby: face_card?: is this card a face card? (> 10)
+to_s (JS:toString()) : human-readable string representation of the card (e.g. "Ace of Spades", "10 of Clubs", "Queen of Hearts")
+Cards must be Comparable to other cards. Compare the ranks of the cards only.
+
+Since this is a low level layer to build card games above, all test input will be valid. All ranks will be between 1 and 13 and all suits will be one of
+
+Ruby: :hearts, :diamonds, :spades, :clubs
+Javascript: Card.HEARTS, Card.DIAMONDS, Card.CLUBS, Card.SPADES
+
+**My solution:**
+
+```javascript
+
+var symbols = {
+  1: 'Ace',
+  11: 'Jack',
+  12: 'Queen',
+  13: 'King'
+}
+
+Card.HEARTS = 'Hearts';
+Card.DIAMONDS = 'Diamonds';
+Card.CLUBS = 'Clubs';
+Card.SPADES = 'Spades';
+
+function Card(suit, rank) {
+  this.suit = suit;
+  this.rank = rank;
+  this.face_card = rank > 10;
+  this.valueOf = function(){
+    return this.rank;
+  }
+}
+
+Card.prototype = {
+  toString: function() {
+    if(typeof symbols[this.rank] === 'undefined'){
+      return this.rank + ' of ' +  this.suit;
+    }
+    else{
+      return symbols[this.rank] + ' of ' +  this.suit;
+    }
+  },
+};
+
+function Deck() {
+  var kinds = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
+  this.cards = [];
+  for(var i=0; i<4; i++){
+    for(var j=1; j<14; j++){
+      this.cards.push(new Card(kinds[i], j));
+    }
+  }
+}
+
+Deck.prototype = {
+  count: function() {
+    return this.cards.length;
+  },
+  draw: function(n) {
+    var removed = this.cards.slice(-n);
+    this.cards = this.cards.slice(0, this.cards.length - n);
+    return removed;
+  },
+  shuffle: function() {
+    //Not the greatest shuffle
+    var temp = this.cards[0];
+    this.cards[0] = this.cards[this.cards.length - 1];
+    this.cards[this.cards.length - 1] = temp;
+  }
+};
 ```
