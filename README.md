@@ -702,3 +702,45 @@ function flip(fn) {
     }
 }
 ```
+
+##EX 15
+
+Description:
+
+Given an array of integers of any length, return an array that has 1 added to the value represented by the array.
+
+For example an array [2, 3, 9] equals 239, add one would return an array [2, 4, 0].
+
+[4, 3, 2, 5] would return [4, 3, 2, 6]
+
+The array can't be empty and only positive, single digit integers are allowed. The function should return null if the array is empty or any of the array values are negative or more than 10.
+
+[1, -9] would return null/nil/None (according to the language implemented).
+
+```javascript
+function upArray(arr){
+
+  if(arr.some(function(i){ return i>9 || i <0;}) || !arr.length) return null;
+
+  var t = arr.join('').toString().split('').map(function(i, index, array){
+    if(index == array.length-1) return +i + 1;
+    return +i;
+  }).reverse();
+
+
+  for(var i=0; i<t.length; i++){
+    if(t[i] == 10){
+      t[i] = 0;
+      t[i+1] = t[i+1] + 1;
+    }
+  }
+
+  t.reverse();
+
+  if(!t[0])
+    t[0] = 1;
+
+  return t;
+
+}
+```
