@@ -646,3 +646,33 @@ function prefill(n, v) {
   return Array.apply({}, new Array(n)).map(function(i){ return v; });
 }
 ```
+
+##EX 13
+
+Description:
+
+The Array's reverse() method has gone missing! Re-write it, quick-sharp!
+
+When this method is called, it reverses the order of the items in the array it is called on, and then returns that same array.
+
+Here's an example:
+```javascript
+var input = [1, 2, 3, 4];
+input.reverse(); // == [4, 3, 2, 1]  // returned by .reverse()
+input;           // == [4, 3, 2, 1]  // items reordered in the original array
+```
+
+**My solution:**
+
+```javascript
+Array.prototype.reverse = function() {
+  let temp,c = 0;
+  for(let i=this.length-1; i>=this.length/2; --i){
+    temp = this[i];
+    this[i] = this[c];
+    this[c] = temp;
+    c++;
+  }
+  return this;
+};
+```
