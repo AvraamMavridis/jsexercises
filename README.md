@@ -604,3 +604,45 @@ function autocomplete(input, dictionary){
   }).slice(0,5);
 }
 ```
+
+##EX 12
+
+Description:
+
+Create the function prefill that returns an array of n elements that all have the same value v. See if you can do this without using a loop.
+
+You have to validate input:
+
+v can be anything (primitive or otherwise)
+if v is ommited, fill the array with undefined
+if n is 0, return an empty array
+if n is anything other than an integer or integer-formatted string (e.g. '123') that is >=0, throw a TypeError
+When throwing a TypeError, the message should be n is invalid, where you replace n for the actual value passed to the function.
+
+Code Examples
+```javascript
+
+    prefill(3,1) --> [1,1,1]
+
+    prefill(2,"abc") --> ['abc','abc']
+
+    prefill("1", 1) --> [1]
+
+    prefill(3, prefill(2,'2d'))
+      --> [['2d','2d'],['2d','2d'],['2d','2d']]
+
+    prefill("xyz", 1)
+      --> throws TypeError with message "xyz is invalid"
+```
+
+**My solution:**
+
+```javascript
+function prefill(n, v) {
+  if(isNaN(n) || n < 0 || !isFinite(n) || (n%1 !=0) || (typeof n == "boolean")){
+    throw TypeError(n + ' is invalid');
+  }
+  if(n==0) return [];
+  return Array.apply({}, new Array(n)).map(function(i){ return v; });
+}
+```
