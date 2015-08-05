@@ -800,6 +800,7 @@ Finally, take that sum and divide it by 10. If the remainder equals zero, the or
 ```
 
 ##EX 17
+
 Description:
 
 Number is a palindrome if it is equal to the number with digits in reversed order. For example, 5, 44, 171, 4884 are palindromes and 43, 194, 4773 are not palindromes.
@@ -828,4 +829,74 @@ palindrome_chain_length = (n) ->
   else
     this.counter++
     palindrome_chain_length(n+(+n.toString().split('').reverse().join('')))
+```
+
+##EX 18
+
+Description:
+
+Write a method that takes a field for well-known board game "Battleship" as an argument and returns true if it has a valid disposition of ships, false otherwise. Argument is guaranteed to be 10*10 two-dimension array. Elements in the array are numbers, 0 if the cell is free and 1 if occupied by ship.
+
+Battleship (also Battleships or Sea Battle) is a guessing game for two players. Each player has a 10x10 grid containing several "ships" and objective is to destroy enemy's forces by targetting individual cells on his field. The ship occupies one or more cells in the grid. Size and number of ships may differ from version to version. In this kata we will use Soviet/Russian version of the game.
+
+
+Before the game begins, players set up the board and place the ships accordingly to the following rules:
+There must be single battleship (size of 4 cells), 2 cruisers (size 3), 3 destroyers (size 2) and 4 submarines (size 1). Any additional ships are not allowed, as well as missing ships.
+Each ship must be a straight line, except for submarines, which are just single cell.
+
+The ship cannot overlap or be in contact with any other ship, neither by edge nor by corner.
+
+**My solution:**
+
+```coffee
+checkCollapse = (field) ->
+  field.every((row,i, array) -> 
+    row.every((cell, j, ar) ->
+      if cell == 1
+        t = [array[i-1]?[j-1], array[i-1]?[j+1], array[i+1]?[j-1], array[i+1]?[j+1]].filter(Boolean).length
+        return t == 0
+      else
+        return true
+    )
+  )
+  
+countShips = (field, nc) ->
+  pattern1 = '0'
+  pattern2 = ''
+  pattern3 = ''
+  for l in [1..nc]
+    pattern1 += '1'
+  
+  pattern2 = '^' + pattern1.slice(1, pattern1.length) + '0'
+  pattern3 = '0' + pattern1.slice(1, pattern1.length) + '$'
+  pattern1 = pattern1  + '0'
+  counter = 0
+  for row in field
+    t = row.join('')
+    l1 = (t.match(new RegExp(pattern1,'gi')) || []).length 
+    l2 = (t.match(new RegExp(pattern2,'gi')) || []).length 
+    l3 = (t.match(new RegExp(pattern3,'gi')) || []).length
+    counter += l1 + l2 + l3
+  counter
+  
+rotateField = (field) ->
+  field.map((row, index, array) ->
+    t = field.reduce((sum, i, indx, array) ->
+      sum.push(i[index])
+      return sum
+    ,[])
+    return t
+  )
+  
+validateBattlefield = (field) -> 
+  return false if checkCollapse(field) == false
+  
+  battleships = countShips(field, 4) +  countShips(rotateField(field),4)
+  cruisers = countShips(field, 3) +  countShips(rotateField(field),3)
+  destroyers = countShips(field, 2) +  countShips(rotateField(field),2)
+  aces = field.reduce((sum, row) -> 
+    return row.filter(Boolean).length + sum
+  ,0)
+  submarines = aces - 4*battleships - 3*cruisers - 2*destroyers
+  return battleships == 1 and cruisers == 2 and destroyers == 3 and submarines == 4
 ```
