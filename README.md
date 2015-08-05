@@ -900,3 +900,47 @@ validateBattlefield = (field) ->
   submarines = aces - 4*battleships - 3*cruisers - 2*destroyers
   return battleships == 1 and cruisers == 2 and destroyers == 3 and submarines == 4
 ```
+
+##EX19 
+
+Description:
+
+Sudoku Background
+
+Sudoku is a game played on a 9x9 grid. The goal of the game is to fill all cells of the grid with digits from 1 to 9, so that each column, each row, and each of the nine 3x3 sub-grids (also known as blocks) contain all of the digits from 1 to 9. 
+(More info at: http://en.wikipedia.org/wiki/Sudoku)
+
+Sudoku Solution Validator
+
+Write a function validSolution that accepts a 2D array representing a Sudoku board, and returns true if it is a valid solution, or false otherwise. The cells of the sudoku board may also contain 0's, which will represent empty cells. Boards containing one or more zeroes are considered to be invalid solutions.
+
+**My solution:**
+
+```coffee
+hasUniqValues = (arr) -> arr.every((i, index, array) -> index == array.indexOf(i))
+
+hasNoZeros = (arr) -> arr.filter(Boolean).length == arr.length
+  
+rotateBoard = (board) ->
+  board.map((row, index, array) ->
+    board.reduce((sum, i, indx, array) ->
+      sum.push(i[index])
+      sum
+    ,[])
+  )
+
+createIndividualsCellsBoard = (board) ->
+  newBoard = []
+  for i in [0..board.length-1] by 3
+    r1 = board.filter((val, index) -> index < 3)
+    r1 = r1[0].splice(0,3).concat(r1[1].splice(0,3)).concat(r1[2].splice(0,3))
+    r2 = board.filter((val, index) -> index >= 3 and index <6)
+    r2 = r2[0].splice(0,3).concat(r2[1].splice(0,3)).concat(r2[2].splice(0,3))
+    r3 = board.filter((val, index) -> index >= 6 and index <9)
+    r3 = r3[0].splice(0,3).concat(r3[1].splice(0,3)).concat(r3[2].splice(0,3))
+    newBoard.push(r1,r2,r3)
+  newBoard
+
+validSolution = (board) ->
+  board.every(hasNoZeros) and board.every(hasUniqValues) and rotateBoard(board).every(hasUniqValues) and createIndividualsCellsBoard(board).every(hasUniqValues)   
+```
