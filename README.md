@@ -985,10 +985,44 @@ Description:
 
 Write a function cubeSum(n, m) that will calculate a sum of cubes of numbers in a given range, starting from the smaller (but not including it) to the larger (including). The first argument is not necessarily the larger number.
 
-```
+**My solution:**
+
+```javascript
 function cubeSum(n, m){
   return Array.apply({},Array(Math.abs(n-m))).map(function(i,index){ return Math.pow(Math.max(m,n) - index, 3); }).reduce(function(sum, i){ return sum+i; }, 0);
 }
 ```
 
+##EX 25
+
+Description:
+
+Your job is to write a function which increments a string, to create a new string. If the string already ends with a number, the number should be incremented by 1. If the string does not end with a number the number 1 should be appended to the new string.
+
+Examples:
+
+foo -> foo1
+
+foobar23 -> foobar24
+
+foo0042 -> foo0043
+
+foo9 -> foo10
+
+foo099 -> foo100
+
+Attention: If the number has leading zeros the amount of digits should be considered.
+
+**My solution:**
+
+```javascript
+function incrementString (strng) {
+  if(isNaN(strng.split('').pop())) return strng + 1;
+  let digits = strng.match(/[0-9]/g) || '';
+  let chars = [];
+  if(!!strng.match(/[a-zA-Z]/g)) chars = strng.match(/[a-zA-Z]/g);
+  let newnumber = (+digits.filter(Boolean).join('') + 1).toString().split('');
+  return chars.join('') + Array.apply({}, new Array(digits.length>newnumber.length? digits.length-newnumber.length:0)).map(function(){return 0}).concat(newnumber).join('');
+}
+```
 
