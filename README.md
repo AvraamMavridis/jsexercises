@@ -979,4 +979,16 @@ var intersect = function () {
 };
 ```
 
+##EX 21
+
+Description:
+
+Write a function cubeSum(n, m) that will calculate a sum of cubes of numbers in a given range, starting from the smaller (but not including it) to the larger (including). The first argument is not necessarily the larger number.
+
+```
+function cubeSum(n, m){
+  return Array.apply({},Array(Math.abs(n-m))).map(function(i,index){ return Math.pow(Math.max(m,n) - index, 3); }).reduce(function(sum, i){ return sum+i; }, 0);
+}
+```
+
 
